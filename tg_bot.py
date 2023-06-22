@@ -2,7 +2,7 @@ import telegram
 import argparse
 import random
 import glob
-from open_and_send_file import open_and_send_files
+from open_and_send_file import open_and_send_file
 from dotenv import load_dotenv
 import os
 
