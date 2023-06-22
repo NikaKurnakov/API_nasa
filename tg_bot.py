@@ -7,10 +7,10 @@ from dotenv import load_dotenv
 import os
 
 
-def send_photo(bot_token, chat_id, arg_path):
+def send_photo(bot_token, chat_id, images_path):
     bot = telegram.Bot(token=bot_token)
     bot.send_message(chat_id=chat_id, text='Привет!')
-    open_and_send_files(arg_path, chat_id, bot)
+    open_and_send_file(images_path, chat_id, bot)
 
 
 def main():
@@ -23,9 +23,8 @@ def main():
     args = parser.parse_args()
     bot_token = args.bot_token
     chat_id = args.chanel_id
-    file_name = os.path.join("images", args.file)
-    arg_path = file_name if args.file else random.choice(files)
-    send_photo(bot_token, chat_id, arg_path)
+    images_path = os.path.join("images", args.file) if args.file else random.choice(files)
+    send_photo(bot_token, chat_id, images_path)
 
 
 if __name__ == '__main__':
