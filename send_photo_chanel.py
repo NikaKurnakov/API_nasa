@@ -5,13 +5,14 @@ import os
 import telegram
 import argparse
 from dotenv import load_dotenv
-from open_and_send_file import open_and_send_files
+import requests
+from open_and_send_file import open_and_send_file
 
 
 def send_photo_tg_chanel(bot_token, chat_id, delay_time, files):
     bot = telegram.Bot(token=bot_token)
     for file in files:
-        open_and_send_files(file, chat_id, bot)
+        open_and_send_file(file, chat_id, bot)
         time.sleep(int(delay_time))
 
 
@@ -28,8 +29,11 @@ def main():
     delay_time = args.delay if args.delay else os.getenv('DELAY', default=14400)
     files = glob.glob("images/*.png")
     while True:
-        random.shuffle(files)
-        send_photo_tg_chanel(bot_token, chat_id, delay_time, files)
+        try:
+            random.shuffle(files)
+            send_photo_tg_chanel(bot_token, chat_id, delay_time, files)
+        except requests.exceptions.ConnectionError as error:
+            continue
 
 
 if __name__ == '__main__':
