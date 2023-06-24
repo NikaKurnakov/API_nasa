@@ -5,7 +5,6 @@ import os
 import telegram
 import argparse
 from dotenv import load_dotenv
-import requests
 from open_and_send_file import open_and_send_file
 
 
@@ -23,7 +22,6 @@ def main():
     parser.add_argument("--bot_token", default=os.environ["TG_TOKEN_BOT"], help="token bot")
     parser.add_argument("--chanel_id", default=os.environ["TG_CHANEL_ID"], help="id chanel")
     args = parser.parse_args()
-    token = args.bot_token
     bot_token = args.bot_token
     chat_id = args.chanel_id
     delay_time = args.delay if args.delay else os.getenv('DELAY', default=14400)
@@ -32,7 +30,8 @@ def main():
         try:
             random.shuffle(files)
             send_photo_tg_chanel(bot_token, chat_id, delay_time, files)
-        except requests.exceptions.ConnectionError as error:
+        except telegram.error.NetworkError as error:
+            time.sleep(10)
             continue
 
 
